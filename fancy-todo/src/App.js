@@ -1,6 +1,7 @@
 import './App.css';
 import Login from './pages/Login';
 import Home from './pages/Home';
+import Register from './pages/Register'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 function App() {
@@ -15,6 +16,10 @@ function App() {
           <Route 
           exact path="/" 
           component={Home} 
+          />
+          <Route 
+          exact path="/register" 
+          component={Register} 
           />
         </Switch>
       </Router>
