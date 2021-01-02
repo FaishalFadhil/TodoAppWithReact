@@ -11,7 +11,6 @@ class Login extends Component {
      }
   }
   async onSubmit(values) {
-    console.log(values, 'valueszzzz');
     try {
       const {email, password} = values
       const login = await axios({
@@ -22,18 +21,24 @@ class Login extends Component {
           password
         }
       })
-      console.log(login);
+      // console.log(login.data);
+      localStorage.setItem('access_token', login.data.access_token)
+      //fetch data
+      this.props.history.push('/')
     } catch (error) {
       // console.log(error.response.data);
       this.setState({
         error: error.response.data
       })
+    } finally {
+      values.email = ''
+      values.password = ''
     }
     // this.props.history.push('/')
   };
   render() { 
     return (
-      <Box className="login" display="flex" justifyContent="center" alignItems="center" style={{height:'100vh'}}>
+      <Box className="login" display="flex" justifyContent="center" alignItems="center" style={{height:'91.5vh'}}>
         <FormLogin 
         onSubmit={(values) => this.onSubmit(values)}
         error={this.state.error}

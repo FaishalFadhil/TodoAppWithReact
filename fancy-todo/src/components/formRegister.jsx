@@ -81,7 +81,7 @@ class FormRegister extends Component {
                         name="password"
                         component={TextField}
                         type="password"
-                        label="Password"
+                        label="Password - minimum 8 characters include number/symbol(s)"
                       />
                     </Grid>
                     <Grid item xs={12}>

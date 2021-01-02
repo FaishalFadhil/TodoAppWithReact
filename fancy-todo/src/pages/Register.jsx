@@ -11,7 +11,7 @@ class Register extends Component {
      }
   }
   async onSubmit(values) {
-    console.log(values, 'valueszzzz');
+    // console.log(values, 'valueszzzz');
     try {
       const {firstName, lastName, email, password} = values
       const Register = await axios({
@@ -24,18 +24,24 @@ class Register extends Component {
           password
         }
       })
-      console.log(Register);
+      console.log(Register.data);
+      this.props.history.push('/login')
     } catch (error) {
       // console.log(error.response.data);
       this.setState({
         error: error.response.data.message
       })
+    } finally{
+      values.firstName = ''
+      values.lastName = ''
+      values.email = ''
+      values.password = ''
     }
     // this.props.history.push('/')
   };
   render() { 
     return (
-      <Box className="register" display="flex" justifyContent="center" alignItems="center" style={{height:'100vh'}}>
+      <Box className="register" display="flex" justifyContent="center" alignItems="center" style={{height:'91.5vh'}}>
         <FormRegister 
         onSubmit={(values) => this.onSubmit(values)}
         error={this.state.error}
