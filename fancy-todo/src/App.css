@@ -5,8 +5,9 @@
 .login,
 .register,
 .home {
-  background-color: #282c34;
-  color: white;
+  background-color: #222831;
+  color: #eeeeee;
+  min-height: 100vh;
 }
 
 .App-logo {
@@ -21,7 +22,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #040a16;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

@@ -3,6 +3,8 @@ import Create from '../components/create'
 import Task from '../components/task'
 import { Box, Grid } from '@material-ui/core'
 import axios from '../config/axiosInstance'
+import Typography from '@material-ui/core/Typography';
+import Navbar from '../components/navbar'
 
 class Home extends Component {
   constructor(props) {
@@ -15,6 +17,11 @@ class Home extends Component {
       tasksNotDone: [],
      }
   }
+  logout(){
+    localStorage.clear()
+    this.props.history.push('/login')
+    // this.history.push('/login')
+  };
 
   handleChange = (panel) => (event, isExpanded) => {
     console.log(isExpanded);
@@ -46,6 +53,7 @@ class Home extends Component {
           expanded: false,
           error: []
         })
+        this.fetchTasks()
       }
     } catch (error) {
       // console.log(error.response.status);
@@ -148,6 +156,39 @@ class Home extends Component {
     // this.props.history.push('/')
   };
 
+  async deleteTask(id) {
+    // console.log(values, 'valueszzzz');
+    try {
+      this.setState({
+        expanded: false
+      })
+      const Done = await axios({
+        method: 'delete',
+        url: `/todos/${id}`,
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
+      })
+      if (Done.data) {
+        this.fetchTasks()
+        console.log('DONE!');
+      }
+    } catch (error) {
+      // console.log(error.response.status);
+      switch (error.response.status) {
+        case 404:
+          console.log(error.response.message);
+          break;
+        case 500:
+          console.log(error.response.data);
+          break;
+        default:
+          break;
+      }
+    }
+    // this.props.history.push('/')
+  };
+
   async fetchTasks() {
     this.setState({
       isFetching: true
@@ -190,43 +231,53 @@ class Home extends Component {
 
   render() { 
     return (
-      <Box className="home" display="flex" justifyContent="center" alignItems="center" style={{paddingTop:50,minHeight:'85vh'}}>
-        <Grid>
-          <Create
-          expanded={this.state.expanded}
-          handleChange={(values) => this.handleChange(values)}
-          onSubmit={(values) => this.onSubmit(values)}
-          done={this.state.done}
-          error={this.state.error}
-          />
-          <Grid container alignItems="flex-start" style={{paddingTop: 50, width:1000}}>
-            <Grid item xs={6}>
-              Tasks To Do
-              {this.state.tasksNotDone.map((e, idx) => <Task
-              key={idx}
-              expanded={this.state.expanded}
-              handleChange={(values) => this.handleChange(values)}
-              onSubmitChange={(values) => this.onSubmitChange(values)}
-              // toDoDone={(id) => this.toDoDone(id)}
-              data={e}
-              error={this.state.error}
-              />)}
-              <p>{this.state.isFetching ? 'Fetching tasks...' : ''}</p>
-            </Grid>
-            <Grid item xs={6}>
-              Tasks Done
-              {this.state.tasksDone.map((e, idx) => <Task
-              key={idx}
-              expanded={this.state.expanded}
-              handleChange={(values) => this.handleChange(values)}
-              data={e}
-              error={this.state.error}
-              />)}
-              <p>{this.state.isFetching ? 'Fetching tasks...' : ''}</p>
+      <React.Fragment>
+        <Navbar component={Navbar} logout={() => this.logout()}/>
+        <Box className="home" display="flex" justifyContent="center" alignItems="center" style={{paddingTop:100}}>
+          <Grid>
+            <Typography component="h5" variant="h5" style={{paddingBottom:10}}>
+              Do you have plan to do in coming days?
+            </Typography>
+            <Create
+            expanded={this.state.expanded}
+            handleChange={(values) => this.handleChange(values)}
+            onSubmit={(values) => this.onSubmit(values)}
+            done={this.state.done}
+            error={this.state.error}
+            />
+            <Grid container alignItems="flex-start" style={{paddingTop: 50, width:1000}}>
+              <Grid item xs={5}>
+                <Typography component="h5" variant="h5">
+                  Tasks To Do
+                </Typography>
+                {this.state.tasksNotDone.map((e, idx) => <Task
+                key={idx}
+                expanded={this.state.expanded}
+                handleChange={(values) => this.handleChange(values)}
+                onSubmitChange={(values) => this.onSubmitChange(values)}
+                deleteTask={(id) => this.deleteTask(id)}
+                toDoDone={(id) => this.toDoDone(id)}
+                data={e}
+                error={this.state.error}
+                />)}
+                <p>{this.state.isFetching ? 'Fetching tasks...' : ''}</p>
+              </Grid>
+              <Grid item xs={2}/>
+              <Grid item xs={5}>
+                <Typography component="h5" variant="h5">
+                  Tasks Done
+                </Typography>
+                {this.state.tasksDone.map((e, idx) => <Task
+                key={idx}
+                deleteTask={(id) => this.deleteTask(id)}
+                data={e}
+                />)}
+                <p>{this.state.isFetching ? 'Fetching tasks...' : ''}</p>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </Box>
+        </Box>
+      </React.Fragment>
       );
   }
   componentDidMount() {

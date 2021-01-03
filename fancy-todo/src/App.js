@@ -1,10 +1,11 @@
 import './App.css';
 import React, { Component } from 'react'
-import Navbar from './components/navbar'
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Register from './pages/Register'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import AccessRoute from './helper/haveAccess'
+import NotAccessRoute from './helper/haveNotAccess'
+import { BrowserRouter as Router, Switch} from 'react-router-dom';
 
 
 class App extends Component {
@@ -14,9 +15,6 @@ class App extends Component {
       isAutheticated: true
      }
   }
-  logout(event){
-    console.log('event.currentTarget');
-  };
   change(value){
     this.setState({
       isAutheticated: value
@@ -26,20 +24,16 @@ class App extends Component {
     return (  
       <div className="App">
         <Router>
-          <Navbar component={Navbar} 
-          logout={(event) => this.logout(event)}
-          change={(value) => this.change(value)}
-          auth={this.state.isAutheticated}/>
           <Switch>
-            <Route 
+            <NotAccessRoute
             exact path="/login" 
             component={Login} 
             />
-            <Route 
+            <AccessRoute 
             exact path="/" 
             component={Home} 
             />
-            <Route 
+            <NotAccessRoute
             exact path="/register" 
             component={Register} 
             />

@@ -39,37 +39,43 @@ class Task extends Component {
     this.props.onSubmitChange(obj)
   }
 
+  toDoDone(event){
+    event.preventDefault()
+    console.log(this.props.data.id);
+    const id = this.props.data.id
+    // console.log(this.props);
+    this.props.toDoDone(id)
+  }
+
+  deleteTask(event){
+    event.preventDefault()
+    const id = this.props.data.id
+    // console.log(this.props);
+    this.props.deleteTask(id)
+  }
+
   render() { 
     return ( 
       <div style={{paddingTop:5, paddingBottom:5}}>
-        <Accordion expanded={this.props.expanded === this.props.data.id} onChange={this.props.handleChange(this.props.data.id)}>
+        {this.props.data.status === true ?
+        <Accordion>
           <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
             aria-controls={`${this.props.data.id}content`}
             id={this.props.data.id}
           >
-            <Card style={{display: 'flex', width:450}} elevation={0}>
-              <CardContent style={{width:30, paddingTop:8}}>
-              {this.props.data.status === true ? 
+            <Card style={{display: 'flex', width:370}} elevation={0}>
+              <CardContent style={{width:60, paddingTop:8, paddingLeft:10}}>
                 <Checkbox
                 disabled
                 checked
                 name="todoDone"
-                style={{paddingLeft:10}}
-                />
-              :
-                <Checkbox
-                // onChange={this.props.toDoDone(this.props.data.id)}
-                name="todoDone"
-                style={{paddingLeft:10}}
-                />
-              } 
-              <IconButton  style={{paddingLeft:10}} component="span">
+                /> 
+              <IconButton component="span" onClick={(event)=>this.deleteTask(event)}>
                 <DeleteTwoToneIcon/>
               </IconButton>
               </CardContent>
               <div style={{display: 'flex', flexDirection: 'column'}}>
-                <CardContent style={{width:220, paddingLeft:5}}>
+                <CardContent style={{width:180, paddingLeft:5}}>
                   <Typography component="h6" variant="h6" align='left' style={{fontSize: 18}}>
                     {this.props.data.title}
                   </Typography>
@@ -78,15 +84,52 @@ class Task extends Component {
                   </Typography>
                 </CardContent>
               </div>
-              <CardContent style={{width: 200, paddingTop: 23, paddingLeft: 2, paddingRight: 2}}>
+              <CardContent style={{width: 130, paddingTop: 23, paddingLeft: 2, paddingRight: 2}}>
                 <Typography variant="subtitle2" color="textSecondary">
                   {moment(this.props.data.due_date).format('MMMM Do YYYY')}
                 </Typography>
               </CardContent>
             </Card>
           </AccordionSummary>
-          {
-          this.props.data.status === false ? 
+        </Accordion>
+        :
+        <Accordion expanded={this.props.expanded === this.props.data.id} onChange={this.props.handleChange(this.props.data.id)}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls={`${this.props.data.id}content`}
+            id={this.props.data.id}
+          >
+            <Card style={{display: 'flex', width:370}} elevation={0}>
+              <CardContent style={{width:60, paddingTop:8, paddingLeft:10}}>
+                <Checkbox
+                checked={false}
+                onChange={(event) => this.toDoDone(event)}
+                name="todoDone"
+                />
+              <IconButton component="span" onClick={(event)=>this.deleteTask(event)}>
+                <DeleteTwoToneIcon/>
+              </IconButton>
+              </CardContent>
+              <div style={{display: 'flex', flexDirection: 'column'}}>
+                <CardContent style={{width:180, paddingLeft:5}}>
+                  <Typography component="h6" variant="h6" align='left' style={{fontSize: 18}}>
+                    {this.props.data.title}
+                  </Typography>
+                  <Typography variant="subtitle1" color="textSecondary" align='left'>
+                    {this.props.data.description}
+                  </Typography>
+                </CardContent>
+                <Typography variant="subtitle1" color="textSecondary" align='right' style={{fontSize: 12}}>
+                    Click this card to edit
+                </Typography>
+              </div>
+              <CardContent style={{width: 130, paddingTop: 23, paddingLeft: 2, paddingRight: 2}}>
+                <Typography variant="subtitle2" color="textSecondary">
+                  {moment(this.props.data.due_date).format('MMMM Do YYYY')}
+                </Typography>
+              </CardContent>
+            </Card>
+          </AccordionSummary>
           <AccordionDetails>
             <Form
               onSubmit={(values) => this.onSubmitChange(values)}
@@ -94,9 +137,12 @@ class Task extends Component {
                 title: this.props.data.title,
                 dueDate: this.props.data.due_date.split('T')[0],
                 description: this.props.data.description
-               }}
+              }}
               render={({ handleSubmit, submitting}) => (
                 <form onSubmit={handleSubmit} noValidate>
+                  <Typography variant="h6" color="textSecondary" align='left' style={{paddingLeft:15}}>
+                    Edit:
+                  </Typography>
                   <Paper style={{ padding: 16}} elevation={0}>
                     <Grid container alignItems="flex-start" spacing={2}>
                       <Grid item xs={6}>
@@ -156,9 +202,11 @@ class Task extends Component {
                 </form>
               )}
             />
-          </AccordionDetails> : ''
-        }
+          </AccordionDetails>
         </Accordion>
+        
+        }
+        
       </div>
      );
   }

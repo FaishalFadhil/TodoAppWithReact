@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import FormRegister from '../components/formRegister'
 import { Box } from '@material-ui/core'
 import axios from '../config/axiosInstance'
+import Navbar from '../components/navbar'
 
 class Register extends Component {
   constructor(props) {
@@ -45,12 +46,15 @@ class Register extends Component {
   };
   render() { 
     return (
-      <Box className="register" display="flex" justifyContent="center" alignItems="center" style={{height:'91.5vh'}}>
-        <FormRegister 
-        onSubmit={(values) => this.onSubmit(values)}
-        error={this.state.error}
-        />
-      </Box>
+      <React.Fragment>
+        <Navbar component={Navbar}/>
+        <Box className="register" display="flex" justifyContent="center" alignItems="center">
+          <FormRegister 
+          onSubmit={(values) => this.onSubmit(values)}
+          error={this.state.error}
+          />
+        </Box>
+      </React.Fragment>
       );
   }
 }

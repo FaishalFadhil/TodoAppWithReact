@@ -10,41 +10,33 @@ class Navbar extends Component {
     this.state = {  }
   }
   handleMenu(event){
-    console.log(this.props);
+    event.preventDefault()
+    this.props.logout()
   };
   render() { 
     return ( 
       <div style={{flexGrow: 1}}>
-        <AppBar position="static">
+        <AppBar position="fixed" style={{backgroundColor:'#ffd369', color:'#393e46'}}>
           <Toolbar>
             <Typography edge="start" variant="h6">
               ToDo.co
             </Typography>
             <Typography variant="h6" style={{flexGrow: 1}}>
+                {localStorage.getItem('access_token') ? `Welcome ${localStorage.getItem('fullname')}! Here's your tasks` : ''}
             </Typography>
-            {this.props.auth && (
-              <div>
-                <Button
-                  variant="outlined"
-                  aria-haspopup="true"
-                  onClick={(event) => this.handleMenu(event)}
-                  color="inherit"
-                >
-                  Logout
-                </Button>
-              </div>
+            {localStorage.getItem('access_token') && (
+              <Button
+              variant="outlined"
+              onClick={(event) => this.handleMenu(event)}
+              color="inherit"
+              >
+                Logout
+              </Button> 
             )}
           </Toolbar>
         </AppBar>
       </div>
      );
-  }
-  componentDidMount() {
-    if (localStorage.getItem('access_token')) {
-      this.props.change(true)
-    } else {
-      this.props.change(false)
-    }
   }
 }
  

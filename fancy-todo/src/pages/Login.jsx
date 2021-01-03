@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import FormLogin from '../components/formLogin'
 import { Box } from '@material-ui/core'
 import axios from '../config/axiosInstance'
+import Navbar from '../components/navbar'
 
 class Login extends Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class Login extends Component {
       })
       // console.log(login.data);
       localStorage.setItem('access_token', login.data.access_token)
+      localStorage.setItem('fullname', login.data.fullname)
       //fetch data
       this.props.history.push('/')
     } catch (error) {
@@ -44,12 +46,15 @@ class Login extends Component {
   };
   render() { 
     return (
-      <Box className="login" display="flex" justifyContent="center" alignItems="center" style={{height:'91.5vh'}}>
-        <FormLogin 
-        onSubmit={(values) => this.onSubmit(values)}
-        error={this.state.error}
-        />
-      </Box>
+      <React.Fragment>
+        <Navbar component={Navbar}/>
+        <Box className="login" display="flex" justifyContent="center" alignItems="center">
+          <FormLogin 
+          onSubmit={(values) => this.onSubmit(values)}
+          error={this.state.error}
+          />
+        </Box>
+      </React.Fragment>
       );
   }
 }
