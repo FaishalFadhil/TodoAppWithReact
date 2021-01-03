@@ -25,12 +25,12 @@ class Create extends Component {
 
   render() { 
     return ( 
-      <div ref={this.wrapper} style={{width: 800}}>
-        <Accordion ref={this.wrapper} expanded={this.props.expanded === 'panel2'} onChange={this.props.handleChange('panel2')}>
+      <div ref={this.wrapper} style={{width: 1000}}>
+        <Accordion ref={this.wrapper} expanded={this.props.expanded === 'create'} onChange={this.props.handleChange('create')}>
           <AccordionSummary ref={this.wrapper}
             expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2bh-content"
-            id="panel2bh-header"
+            aria-controls="createbh-content"
+            id="createbh-header"
           >
             <Typography >Create Your Task!</Typography>
           </AccordionSummary>
@@ -42,7 +42,7 @@ class Create extends Component {
                   await handleSubmit(event)
                   form.reset()
                 }} noValidate>
-                  <Paper style={{ padding: 16, width: 730 }}>
+                  <Paper style={{ padding: 16, width: 930 }} elevation={0}>
                     <Grid container alignItems="flex-start" spacing={2}>
                       <Grid item xs={6}>
                         <Field

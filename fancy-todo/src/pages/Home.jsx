@@ -68,6 +68,86 @@ class Home extends Component {
     // this.props.history.push('/')
   };
 
+  async onSubmitChange(values) {
+    // console.log(values, 'valueszzzz');
+    try {
+      console.log(values);
+      const {id, title, due_date, description} = values
+      const Home = await axios({
+        method: 'put',
+        url: `/todos/${id}`,
+        data: {
+          title,
+          description,
+          due_date
+        },
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
+      })
+      console.log(Home.data);
+      if (Home.data) {
+        this.setState({
+          expanded: false,
+          error: []
+        })
+        this.fetchTasks()
+        console.log('DONE!');
+      }
+    } catch (error) {
+      // console.log(error.response.status);
+      switch (error.response.status) {
+        case 401:
+          console.log(error.response.data);
+          break;
+        case 400:
+          this.setState({
+            error: error.response.data.message
+          })
+          break;
+        case 500:
+          console.log(error.response.data);
+          break;
+        default:
+          break;
+      }
+    }
+    // this.props.history.push('/')
+  };
+
+  async toDoDone(id) {
+    // console.log(values, 'valueszzzz');
+    try {
+      this.setState({
+        expanded: false
+      })
+      const Done = await axios({
+        method: 'patch',
+        url: `/todos/${id}`,
+        headers: {
+          access_token: localStorage.getItem('access_token')
+        }
+      })
+      if (Done.data) {
+        this.fetchTasks()
+        console.log('DONE!');
+      }
+    } catch (error) {
+      // console.log(error.response.status);
+      switch (error.response.status) {
+        case 404:
+          console.log(error.response.message);
+          break;
+        case 500:
+          console.log(error.response.data);
+          break;
+        default:
+          break;
+      }
+    }
+    // this.props.history.push('/')
+  };
+
   async fetchTasks() {
     this.setState({
       isFetching: true
@@ -110,7 +190,7 @@ class Home extends Component {
 
   render() { 
     return (
-      <Box className="home" display="flex" justifyContent="center" alignItems="center" style={{minHeight:'91.5vh'}}>
+      <Box className="home" display="flex" justifyContent="center" alignItems="center" style={{paddingTop:50,minHeight:'85vh'}}>
         <Grid>
           <Create
           expanded={this.state.expanded}
@@ -119,13 +199,15 @@ class Home extends Component {
           done={this.state.done}
           error={this.state.error}
           />
-          <Grid container alignItems="flex-start" style={{paddingTop: 50, width:800}}>
+          <Grid container alignItems="flex-start" style={{paddingTop: 50, width:1000}}>
             <Grid item xs={6}>
               Tasks To Do
-              {this.state.tasksNotDone.map(e => <Task
+              {this.state.tasksNotDone.map((e, idx) => <Task
+              key={idx}
               expanded={this.state.expanded}
               handleChange={(values) => this.handleChange(values)}
-              onSubmit={(values) => this.onSubmit(values)}
+              onSubmitChange={(values) => this.onSubmitChange(values)}
+              // toDoDone={(id) => this.toDoDone(id)}
               data={e}
               error={this.state.error}
               />)}
@@ -133,10 +215,10 @@ class Home extends Component {
             </Grid>
             <Grid item xs={6}>
               Tasks Done
-              {this.state.tasksDone.map(e => <Task
+              {this.state.tasksDone.map((e, idx) => <Task
+              key={idx}
               expanded={this.state.expanded}
               handleChange={(values) => this.handleChange(values)}
-              onSubmit={(values) => this.onSubmit(values)}
               data={e}
               error={this.state.error}
               />)}

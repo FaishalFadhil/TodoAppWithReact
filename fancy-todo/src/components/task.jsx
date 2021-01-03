@@ -1,4 +1,10 @@
 import React, {Component} from 'react';
+import moment from 'moment';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Checkbox from '@material-ui/core/Checkbox';
+import DeleteTwoToneIcon from '@material-ui/icons/DeleteTwoTone';
+import IconButton from '@material-ui/core/IconButton';
 // import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -22,31 +28,76 @@ class Task extends Component {
      }
   }
 
+  onSubmitChange(values){
+    const obj = {
+      id: this.props.data.id,
+      title: values.title,
+      description: values.description,
+      due_date: values.dueDate
+    }
+    // console.log(this.props);
+    this.props.onSubmitChange(obj)
+  }
+
   render() { 
     return ( 
-      <div style={{paddingTop:5, paddingBottomm:5}}>
+      <div style={{paddingTop:5, paddingBottom:5}}>
         <Accordion expanded={this.props.expanded === this.props.data.id} onChange={this.props.handleChange(this.props.data.id)}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls={`${this.props.data.id}content`}
             id={this.props.data.id}
           >
-            <Typography >{this.props.data.title}</Typography>
+            <Card style={{display: 'flex', width:450}} elevation={0}>
+              <CardContent style={{width:30, paddingTop:8}}>
+              {this.props.data.status === true ? 
+                <Checkbox
+                disabled
+                checked
+                name="todoDone"
+                style={{paddingLeft:10}}
+                />
+              :
+                <Checkbox
+                // onChange={this.props.toDoDone(this.props.data.id)}
+                name="todoDone"
+                style={{paddingLeft:10}}
+                />
+              } 
+              <IconButton  style={{paddingLeft:10}} component="span">
+                <DeleteTwoToneIcon/>
+              </IconButton>
+              </CardContent>
+              <div style={{display: 'flex', flexDirection: 'column'}}>
+                <CardContent style={{width:220, paddingLeft:5}}>
+                  <Typography component="h6" variant="h6" align='left' style={{fontSize: 18}}>
+                    {this.props.data.title}
+                  </Typography>
+                  <Typography variant="subtitle1" color="textSecondary" align='left'>
+                    {this.props.data.description}
+                  </Typography>
+                </CardContent>
+              </div>
+              <CardContent style={{width: 200, paddingTop: 23, paddingLeft: 2, paddingRight: 2}}>
+                <Typography variant="subtitle2" color="textSecondary">
+                  {moment(this.props.data.due_date).format('MMMM Do YYYY')}
+                </Typography>
+              </CardContent>
+            </Card>
           </AccordionSummary>
+          {
+          this.props.data.status === false ? 
           <AccordionDetails>
             <Form
-              onSubmit={(values) => this.props.onSubmit(values)}
+              onSubmit={(values) => this.onSubmitChange(values)}
               initialValues={{ 
                 title: this.props.data.title,
                 dueDate: this.props.data.due_date.split('T')[0],
                 description: this.props.data.description
                }}
-              render={({ handleSubmit, form, submitting}) => (
-                <form onSubmit={async event => {
-                  await handleSubmit(event)
-                  form.reset()
-                }} noValidate>
-                  <Paper style={{ padding: 16}}>
+              render={({ handleSubmit, submitting}) => (
+                <form onSubmit={handleSubmit} noValidate>
+                  <Paper style={{ padding: 16}} elevation={0}>
                     <Grid container alignItems="flex-start" spacing={2}>
                       <Grid item xs={6}>
                         <Field
@@ -105,7 +156,8 @@ class Task extends Component {
                 </form>
               )}
             />
-          </AccordionDetails>
+          </AccordionDetails> : ''
+        }
         </Accordion>
       </div>
      );
