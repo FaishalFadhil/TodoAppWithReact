@@ -119,16 +119,16 @@ class Home extends Component {
           done={this.state.done}
           error={this.state.error}
           />
-          <Grid container alignItems="flex-start" spacing={2} style={{padding: 50, width:800}}>
+          <Grid container alignItems="flex-start" style={{paddingTop: 50, width:800}}>
             <Grid item xs={6}>
               Tasks To Do
-              {this.state.tasksNotDone.length > 0 ? <Task
+              {this.state.tasksNotDone.map(e => <Task
               expanded={this.state.expanded}
               handleChange={(values) => this.handleChange(values)}
               onSubmit={(values) => this.onSubmit(values)}
-              done={this.state.done}
+              data={e}
               error={this.state.error}
-              /> : ''}
+              />)}
               <p>{this.state.isFetching ? 'Fetching tasks...' : ''}</p>
             </Grid>
             <Grid item xs={6}>
@@ -137,7 +137,7 @@ class Home extends Component {
               expanded={this.state.expanded}
               handleChange={(values) => this.handleChange(values)}
               onSubmit={(values) => this.onSubmit(values)}
-              done={this.state.done}
+              data={e}
               error={this.state.error}
               />)}
               <p>{this.state.isFetching ? 'Fetching tasks...' : ''}</p>

@@ -24,18 +24,23 @@ class Task extends Component {
 
   render() { 
     return ( 
-      <div >
-        <Accordion expanded={this.props.expanded === 'panel1'} onChange={this.props.handleChange('panel1')}>
+      <div style={{paddingTop:5, paddingBottomm:5}}>
+        <Accordion expanded={this.props.expanded === this.props.data.id} onChange={this.props.handleChange(this.props.data.id)}>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1bh-content"
-            id="panel1bh-header"
+            aria-controls={`${this.props.data.id}content`}
+            id={this.props.data.id}
           >
-            <Typography >Task Your Task!</Typography>
+            <Typography >{this.props.data.title}</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Form
               onSubmit={(values) => this.props.onSubmit(values)}
+              initialValues={{ 
+                title: this.props.data.title,
+                dueDate: this.props.data.due_date.split('T')[0],
+                description: this.props.data.description
+               }}
               render={({ handleSubmit, form, submitting}) => (
                 <form onSubmit={async event => {
                   await handleSubmit(event)
