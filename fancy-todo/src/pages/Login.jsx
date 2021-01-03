@@ -27,13 +27,19 @@ class Login extends Component {
       this.props.history.push('/')
     } catch (error) {
       // console.log(error.response.data);
-      this.setState({
-        error: error.response.data
-      })
-    } finally {
-      values.email = ''
-      values.password = ''
-    }
+      switch (error.response.status) {
+        case 401:
+          this.setState({
+            error: error.response.data
+          })
+          break;
+        case 500:
+          console.log(error.response.data);
+          break;
+        default:
+          break;
+      }
+    } 
     // this.props.history.push('/')
   };
   render() { 

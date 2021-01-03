@@ -16,33 +16,22 @@ class FormRegister extends Component {
     super(props);
     this.state = {  }
   }
-  validate(values) {
-    const errors = {};
-    if (!values.password) {
-      errors.password = 'Required';
-    }
-    if (!values.email) {
-      errors.email = 'Required';
-    }
-    if (!values.firstName) {
-      errors.firstName = 'Required';
-    }
-    return errors;
-  };
-  
+
   render() { 
     return ( 
       <React.Fragment>
-        <div style={{ padding: 16, margin: 'auto', maxWidth: 600, maxHeight: 600}}>
+        <div style={{ padding: 16, margin: 'auto', maxWidth: 600}}>
           <CssBaseline />
           <Box fontSize="h4.fontSize" textAlign="left" m={1}>
             Register
           </Box>
           <Form
             onSubmit={(values) => this.props.onSubmit(values)}
-            validate={(values) => this.validate(values)}
-            render={({ handleSubmit, submitting}) => (
-              <form onSubmit={handleSubmit} noValidate>
+            render={({ handleSubmit, form, submitting}) => (
+              <form onSubmit={async event => {
+                await handleSubmit(event)
+                form.reset()
+              }} noValidate>
                 <Paper style={{ padding: 16 }}>
                   <Grid container alignItems="flex-start" spacing={2}>
                     <Grid item xs={6}>

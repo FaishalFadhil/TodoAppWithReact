@@ -28,14 +28,18 @@ class Register extends Component {
       this.props.history.push('/login')
     } catch (error) {
       // console.log(error.response.data);
-      this.setState({
-        error: error.response.data.message
-      })
-    } finally{
-      values.firstName = ''
-      values.lastName = ''
-      values.email = ''
-      values.password = ''
+      switch (error.response.status) {
+        case 400:
+          this.setState({
+            error: error.response.data.message
+          })
+          break;
+        case 500:
+          console.log(error.response.data);
+          break;
+        default:
+          break;
+      }
     }
     // this.props.history.push('/')
   };

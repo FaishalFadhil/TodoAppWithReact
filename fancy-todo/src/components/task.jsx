@@ -15,26 +15,25 @@ import {
 } from '@material-ui/core';
 
 
-class Create extends Component {
+class Task extends Component {
   constructor(props) {
     super(props);
-    this.wrapper = React.createRef()
     this.state = { 
      }
   }
 
   render() { 
     return ( 
-      <div ref={this.wrapper} style={{width: 800}}>
-        <Accordion ref={this.wrapper} expanded={this.props.expanded === 'panel2'} onChange={this.props.handleChange('panel2')}>
-          <AccordionSummary ref={this.wrapper}
+      <div >
+        <Accordion expanded={this.props.expanded === 'panel1'} onChange={this.props.handleChange('panel1')}>
+          <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2bh-content"
-            id="panel2bh-header"
+            aria-controls="panel1bh-content"
+            id="panel1bh-header"
           >
-            <Typography >Create Your Task!</Typography>
+            <Typography >Task Your Task!</Typography>
           </AccordionSummary>
-          <AccordionDetails ref={this.wrapper}>
+          <AccordionDetails>
             <Form
               onSubmit={(values) => this.props.onSubmit(values)}
               render={({ handleSubmit, form, submitting}) => (
@@ -42,7 +41,7 @@ class Create extends Component {
                   await handleSubmit(event)
                   form.reset()
                 }} noValidate>
-                  <Paper style={{ padding: 16, width: 730 }}>
+                  <Paper style={{ padding: 16}}>
                     <Grid container alignItems="flex-start" spacing={2}>
                       <Grid item xs={6}>
                         <Field
@@ -108,4 +107,4 @@ class Create extends Component {
   }
 }
  
-export default Create;
+export default Task;
