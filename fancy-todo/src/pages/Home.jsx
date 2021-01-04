@@ -5,6 +5,8 @@ import { Box, Grid } from '@material-ui/core'
 import axios from '../config/axiosInstance'
 import Typography from '@material-ui/core/Typography';
 import Navbar from '../components/navbar'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class Home extends Component {
   constructor(props) {
@@ -18,6 +20,15 @@ class Home extends Component {
      }
   }
   logout(){
+    toast.success(`🦄 Success! See you again ${localStorage.getItem('fullname')}!`, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
     localStorage.clear()
     this.props.history.push('/login')
     // this.history.push('/login')
@@ -54,11 +65,29 @@ class Home extends Component {
           error: []
         })
         this.fetchTasks()
+        toast.success('🦄 Success! Remember to do your task', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
       }
     } catch (error) {
       // console.log(error.response.status);
       switch (error.response.status) {
         case 401:
+          toast.error(`${error.response.data}`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
           console.log(error.response.data);
           break;
         case 400:
@@ -67,6 +96,15 @@ class Home extends Component {
           })
           break;
         case 500:
+          toast.error(`${error.response.data}`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
           console.log(error.response.data);
           break;
         default:
@@ -79,7 +117,6 @@ class Home extends Component {
   async onSubmitChange(values) {
     // console.log(values, 'valueszzzz');
     try {
-      console.log(values);
       const {id, title, due_date, description} = values
       const Home = await axios({
         method: 'put',
@@ -101,11 +138,29 @@ class Home extends Component {
         })
         this.fetchTasks()
         console.log('DONE!');
+        toast.success('🦄 Success! Changing is needed to make it easier', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
       }
     } catch (error) {
       // console.log(error.response.status);
       switch (error.response.status) {
         case 401:
+          toast.error(`${error.response.data}`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
           console.log(error.response.data);
           break;
         case 400:
@@ -114,6 +169,15 @@ class Home extends Component {
           })
           break;
         case 500:
+          toast.error(`${error.response.data}`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
           console.log(error.response.data);
           break;
         default:
@@ -138,15 +202,42 @@ class Home extends Component {
       })
       if (Done.data) {
         this.fetchTasks()
+        toast.success('🦄 Success! You already done your task!', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
         console.log('DONE!');
       }
     } catch (error) {
       // console.log(error.response.status);
       switch (error.response.status) {
         case 404:
+          toast.error(`${error.response.message}`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
           console.log(error.response.message);
           break;
         case 500:
+          toast.error(`${error.response.data}`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
           console.log(error.response.data);
           break;
         default:
@@ -172,14 +263,41 @@ class Home extends Component {
       if (Done.data) {
         this.fetchTasks()
         console.log('DONE!');
+        toast.success('🦄 Success! Deleting....', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          });
       }
     } catch (error) {
       // console.log(error.response.status);
       switch (error.response.status) {
         case 404:
+          toast.error(`${error.response.message}`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
           console.log(error.response.message);
           break;
         case 500:
+          toast.error(`${error.response.data}`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
           console.log(error.response.data);
           break;
         default:
@@ -217,9 +335,27 @@ class Home extends Component {
       // console.log(error.response.status);
       switch (error.response.status) {
         case 401:
+          toast.error(`${error.response.data}`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
           console.log(error.response.data);
           break;
         case 500:
+          toast.error(`${error.response.data}`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
           console.log(error.response.data);
           break;
         default:
@@ -232,51 +368,63 @@ class Home extends Component {
   render() { 
     return (
       <React.Fragment>
-        <Navbar component={Navbar} logout={() => this.logout()}/>
-        <Box className="home" display="flex" justifyContent="center" alignItems="center" style={{paddingTop:100}}>
-          <Grid>
-            <Typography component="h5" variant="h5" style={{paddingBottom:10}}>
-              Do you have plan to do in coming days?
-            </Typography>
-            <Create
-            expanded={this.state.expanded}
-            handleChange={(values) => this.handleChange(values)}
-            onSubmit={(values) => this.onSubmit(values)}
-            done={this.state.done}
-            error={this.state.error}
-            />
-            <Grid container alignItems="flex-start" style={{paddingTop: 50, width:1000}}>
-              <Grid item xs={5}>
-                <Typography component="h5" variant="h5">
-                  Tasks To Do
-                </Typography>
-                {this.state.tasksNotDone.map((e, idx) => <Task
-                key={idx}
-                expanded={this.state.expanded}
-                handleChange={(values) => this.handleChange(values)}
-                onSubmitChange={(values) => this.onSubmitChange(values)}
-                deleteTask={(id) => this.deleteTask(id)}
-                toDoDone={(id) => this.toDoDone(id)}
-                data={e}
-                error={this.state.error}
-                />)}
-                <p>{this.state.isFetching ? 'Fetching tasks...' : ''}</p>
-              </Grid>
-              <Grid item xs={2}/>
-              <Grid item xs={5}>
-                <Typography component="h5" variant="h5">
-                  Tasks Done
-                </Typography>
-                {this.state.tasksDone.map((e, idx) => <Task
-                key={idx}
-                deleteTask={(id) => this.deleteTask(id)}
-                data={e}
-                />)}
-                <p>{this.state.isFetching ? 'Fetching tasks...' : ''}</p>
+        <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        />
+          <Navbar component={Navbar} logout={() => this.logout()}/>
+          <Box className="home" display="flex" justifyContent="center" alignItems="center" style={{paddingTop:100}}>
+            <Grid>
+              <Typography component="h5" variant="h5" style={{paddingBottom:10}}>
+                Do you have plan to do in coming days?
+              </Typography>
+              <Create
+              expanded={this.state.expanded}
+              handleChange={(values) => this.handleChange(values)}
+              onSubmit={(values) => this.onSubmit(values)}
+              done={this.state.done}
+              error={this.state.error}
+              />
+              <Grid container alignItems="flex-start" style={{paddingTop: 50, width:1000}}>
+                <Grid item xs={5}>
+                  <Typography component="h5" variant="h5">
+                    Tasks To Do
+                  </Typography>
+                  {this.state.tasksNotDone.map((e, idx) => <Task
+                  key={idx}
+                  expanded={this.state.expanded}
+                  handleChange={(values) => this.handleChange(values)}
+                  onSubmitChange={(values) => this.onSubmitChange(values)}
+                  deleteTask={(id) => this.deleteTask(id)}
+                  toDoDone={(id) => this.toDoDone(id)}
+                  data={e}
+                  error={this.state.error}
+                  />)}
+                  <p>{this.state.isFetching ? 'Fetching tasks...' : ''}</p>
+                </Grid>
+                <Grid item xs={2}/>
+                <Grid item xs={5}>
+                  <Typography component="h5" variant="h5">
+                    Tasks Done
+                  </Typography>
+                  {this.state.tasksDone.map((e, idx) => <Task
+                  key={idx}
+                  deleteTask={(id) => this.deleteTask(id)}
+                  data={e}
+                  />)}
+                  <p>{this.state.isFetching ? 'Fetching tasks...' : ''}</p>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </Box>
+          </Box>
+        <ToastContainer />
       </React.Fragment>
       );
   }

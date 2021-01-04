@@ -3,6 +3,8 @@ import FormRegister from '../components/formRegister'
 import { Box } from '@material-ui/core'
 import axios from '../config/axiosInstance'
 import Navbar from '../components/navbar'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class Register extends Component {
   constructor(props) {
@@ -25,8 +27,19 @@ class Register extends Component {
           password
         }
       })
-      console.log(Register.data);
-      this.props.history.push('/login')
+      if (Register) {
+        console.log(Register.data);
+        toast.success('🦄 Success! you can login now ', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        this.props.history.push('/login') 
+      }
     } catch (error) {
       // console.log(error.response.data);
       switch (error.response.status) {
@@ -36,6 +49,15 @@ class Register extends Component {
           })
           break;
         case 500:
+          toast.error(`${error.response.data}`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            });
           console.log(error.response.data);
           break;
         default:
@@ -47,13 +69,25 @@ class Register extends Component {
   render() { 
     return (
       <React.Fragment>
-        <Navbar component={Navbar}/>
-        <Box className="register" display="flex" justifyContent="center" alignItems="center">
-          <FormRegister 
-          onSubmit={(values) => this.onSubmit(values)}
-          error={this.state.error}
-          />
-        </Box>
+        <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        />
+          <Navbar component={Navbar}/>
+          <Box className="register" display="flex" justifyContent="center" alignItems="center">
+            <FormRegister 
+            onSubmit={(values) => this.onSubmit(values)}
+            error={this.state.error}
+            />
+          </Box>
+        <ToastContainer />
       </React.Fragment>
       );
   }
